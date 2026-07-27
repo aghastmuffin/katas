@@ -56,6 +56,7 @@ function yowaspStaticPlugin() {
 }
 
 export default defineConfig({
+  base: '/katas/', // Matches your GitHub repository name
   assetsInclude: ['**/*.a', '**/*.wasm', '**/*.tar'],
   optimizeDeps: {
     exclude: ['@yowasp/clang'],
