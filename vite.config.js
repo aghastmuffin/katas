@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 
 const root = path.dirname(fileURLToPath(import.meta.url));
 const yowaspGen = path.resolve(root, 'node_modules/@yowasp/clang/gen');
+const base = '/katas/';
 
 const MIME = {
   '.js': 'text/javascript; charset=utf-8',
@@ -22,9 +23,15 @@ function yowaspStaticPlugin() {
     configureServer(server) {
       server.middlewares.use((req, res, next) => {
         const raw = req.url?.split('?')[0] ?? '';
-        if (!raw.startsWith('/yowasp/')) return next();
 
-        const rel = decodeURIComponent(raw.slice('/yowasp/'.length));
+        let rel = '';
+        if (raw.startsWith('/yowasp/')) {
+          rel = decodeURIComponent(raw.slice('/yowasp/'.length));
+        } else if (raw.startsWith(`${base}yowasp/`)) {
+          rel = decodeURIComponent(raw.slice(`${base}yowasp/`.length));
+        } else {
+          return next();
+        }
         if (!rel || rel.includes('..')) {
           res.statusCode = 400;
           res.end('Bad request');
@@ -56,7 +63,7 @@ function yowaspStaticPlugin() {
 }
 
 export default defineConfig({
-  base: '/katas/', // Matches your GitHub repository name
+  base, // Matches your GitHub repository name
   assetsInclude: ['**/*.a', '**/*.wasm', '**/*.tar'],
   optimizeDeps: {
     exclude: ['@yowasp/clang'],

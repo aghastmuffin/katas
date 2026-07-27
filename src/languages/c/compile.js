@@ -109,7 +109,8 @@ export async function ensureCompilerReady(onProgress, onLog) {
   // Load the untransformed bundle from /yowasp/* (see vite.config.js).
   // Variable URL + @vite-ignore prevents Vite from analyzing/prebundling the import
   // (prebundled deps return JSON 504 → MIME error and language switch rolls back).
-  const yowaspUrl = `${window.location.origin}/yowasp/bundle.js`;
+  const base = import.meta.env.BASE_URL;
+  const yowaspUrl = `${window.location.origin}${base}yowasp/bundle.js`;
   const [{ runClang, runLLVM, Exit }, tree] = await Promise.all([
     import(/* @vite-ignore */ yowaspUrl),
     buildTwrTree(onLog),
