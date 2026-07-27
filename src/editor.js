@@ -1,6 +1,13 @@
 import * as monaco from 'monaco-editor-core';
+import editorWorker from 'monaco-editor-core/esm/vs/editor/editor.worker.start.js?worker';
 import { createHighlighter } from 'shiki';
 import { shikiToMonaco } from '@shikijs/monaco';
+
+self.MonacoEnvironment = {
+  getWorker() {
+    return new editorWorker();
+  },
+};
 import {
   getActiveLanguage,
   getLanguage,
