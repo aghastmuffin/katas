@@ -1,0 +1,11 @@
+lessons:
+  arrays-hashing: "Arrays & Hashing"
+  two-pointers: "Two Pointers"
+  sliding-window: "Sliding Window"
+  stack: "Stack"
+
+lesson-order: |
+  1: arrays-hashing
+  2: two-pointers
+  3: sliding-window
+  4: stack
