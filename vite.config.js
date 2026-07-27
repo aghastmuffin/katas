@@ -61,6 +61,9 @@ export default defineConfig({
   optimizeDeps: {
     exclude: ['@yowasp/clang'],
   },
+  worker: {
+    format: 'es',
+  },
   build: {
     assetsInlineLimit: 0,
     chunkSizeWarningLimit: 200000,
