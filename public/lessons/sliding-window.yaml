@@ -1,0 +1,108 @@
+--- #KATASCONFIG
+id: "sliding-window"
+title: "Sliding Window"
+author: "SYSTEM"
+tags:
+  - arrays
+  - sliding-window
+--- #END KATASCONFIG
+
+lessontitle: "Best Time to Buy and Sell Stock"
+metadata:
+  difficulty: 1
+
+content:
+  - type: markdown
+    text: |
+      # Best Time to Buy and Sell Stock
+
+      You are given an array `prices` where `prices[i]` is the price of a given stock on the $i^{\text{th}}$ day.
+
+      You want to maximize your profit by choosing a **single day** to buy one stock and choosing a **different day in the future** to sell that stock.
+
+      Return *the maximum profit you can achieve from this transaction*. If you cannot achieve any profit, return `0`.
+
+      ### Examples
+      - **Input:** `prices = [7, 1, 5, 3, 6, 4]`
+        **Output:** `5` (Buy on day 2 (price = 1) and sell on day 5 (price = 6), profit = 6 - 1 = 5)
+      - **Input:** `prices = [7, 6, 4, 3, 1]`
+        **Output:** `0` (In this case, no transactions are done and max profit = 0)
+
+  - type: codeblock
+    language: python
+    boilerplate:
+      - function:
+          name: max_profit
+          expects: int
+          inputs: |
+            prices = list[int]
+
+    python: |
+      def max_profit(prices: list[int]) -> int:
+          # Write your solution here
+          pass
+
+  - type: tests
+    test_cases:
+      - input: [[7, 1, 5, 3, 6, 4]]
+        expected: 5
+      - input: [[7, 6, 4, 3, 1]]
+        expected: 0
+      - input: [[2, 4, 1]]
+        expected: 2
+
+  - type: hint
+    text: |
+      Keep track of the minimum price seen so far as you iterate through the array, and at each day calculate the potential profit if you were to sell on that day. Update the max profit accordingly.
+
+---
+
+lessontitle: "Longest Substring Without Repeating Characters"
+metadata:
+  difficulty: 2
+
+content:
+  - type: markdown
+    text: |
+      # Longest Substring Without Repeating Characters
+
+      Given a string `s`, find the length of the **longest substring** without repeating characters.
+
+      A **substring** is a contiguous non-empty sequence of characters within a string.
+
+      ### Examples
+      - **Input:** `s = "abcabcbb"`
+        **Output:** `3` (The answer is "abc", with the length of 3)
+      - **Input:** `s = "bbbbb"`
+        **Output:** `1` (The answer is "b", with the length of 1)
+      - **Input:** `s = "pwwkew"`
+        **Output:** `3` (The answer is "wke", with the length of 3)
+
+  - type: codeblock
+    language: python
+    boilerplate:
+      - function:
+          name: length_of_longest_substring
+          expects: int
+          inputs: |
+            s = str
+
+    python: |
+      def length_of_longest_substring(s: str) -> int:
+          # Write your solution here
+          pass
+
+  - type: tests
+    test_cases:
+      - input: ["abcabcbb"]
+        expected: 3
+      - input: ["bbbbb"]
+        expected: 1
+      - input: ["pwwkew"]
+        expected: 3
+      - input: [""]
+        expected: 0
+
+  - type: hint
+    text: |
+      Use a sliding window technique with two pointers (`left` and `right`) and a Set/Hash Map to track unique characters in the current window. Expand the window by moving `right`, and if a duplicate is found, shrink the window from the `left` until all characters are unique.

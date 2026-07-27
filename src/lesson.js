@@ -415,8 +415,25 @@ async function fetchAndParseYAML(source) {
   }
 }
 
-export async function displayLesson() {
-  const data = await fetchAndParseYAML(exampleYaml);
+export async function displayLesson(lessonId = 'two-pointers', endpoint = null) {
+  let data = null;
+  if (endpoint) {
+    try {
+      const response = await fetch(`${endpoint}${lessonId}.yaml`);
+      if (response.ok) {
+        const yamlText = await response.text();
+        data = await fetchAndParseYAML(yamlText);
+      }
+    } catch (err) {
+      console.warn(`Failed to fetch dynamic lesson: ${lessonId} from ${endpoint}`, err);
+    }
+  }
+
+  if (!data) {
+    const yamlText = exampleYaml;
+    data = await fetchAndParseYAML(yamlText);
+  }
+
   if (!data) return;
 
   // Index 0 is always the kata config / authors block
