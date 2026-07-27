@@ -1,0 +1,23 @@
+{
+  "name": "katas-vite",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^8.1.1"
+  },
+  "dependencies": {
+    "@shikijs/monaco": "^4.3.1",
+    "@yowasp/clang": "^22.0.0-git20542-10",
+    "js-yaml": "^5.2.2",
+    "monaco-editor-core": "^0.56.0",
+    "pyodide": "^314.0.3",
+    "shiki": "^4.3.1",
+    "twr-wasm": "^2.5.0"
+  }
+}

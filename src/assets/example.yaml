@@ -1,0 +1,86 @@
+--- #KATASCONFIG
+id: "two-pointers-101"
+title: "Understanding Two Pointers"
+author: "Jane Doe"
+tags:
+  - arrays
+  - pointers
+--- #END KATASCONFIG
+
+lessontitle: "Two Pointer Technique"
+metadata:
+  difficulty: 0 #1-3, 1 beginner, 3 advanced
+
+content:
+  - type: markdown
+    text: |
+      # The Two Pointer Pattern
+      
+      The **two-pointer approach** is an algorithmic technique where two pointers 
+      iterate across a data structure simultaneously. It's often used in sorted arrays 
+      to achieve $O(n)$ time complexity.
+
+  - type: codeblock
+    language: python
+    boilerplate:
+      - function:
+          name: max_area
+          expects: int
+          inputs: |
+            height = list[int]
+
+    python: |
+      def max_area(height: list[int]) -> int:
+          # Write your solution here
+          pass
+
+  - type: tests
+    test_cases:
+      - input: [[1, 8, 6, 2, 5, 4, 8, 3, 7]]
+        expected: 49
+      - input: [[1, 1]]
+        expected: 1
+
+  - type: hint
+    text: |
+      Start with pointers at both ends of the array and move the shorter line inward.
+
+---
+
+lessontitle: "Two Sum II (sorted)"
+content:
+  - type: markdown
+    text: |
+      # Practice: Two Sum on a Sorted Array
+
+      Given a 1-indexed sorted array of integers, return the indices of the
+      two numbers that add up to a target. Use two pointers from both ends.
+
+  - type: codeblock
+    language: python
+    boilerplate:
+      - function:
+          name: two_sum
+          expects: list[int]
+          inputs: |
+            numbers = list[int]
+            target = int
+
+    python: |
+      def two_sum(numbers: list[int], target: int) -> list[int]:
+          # Write your solution here
+          pass
+
+  - type: tests
+    test_cases:
+      - input: [[2, 7, 11, 15], 9]
+        expected: [1, 2]
+      - input: [[2, 3, 4], 6]
+        expected: [1, 3]
+      - input: [[-1, 0], -1]
+        expected: [1, 2]
+
+  - type: hint
+    text: |
+      Left starts at the beginning, right at the end. Move the pointer
+      on the side that makes the sum closer to the target.
