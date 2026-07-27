@@ -1,0 +1,1 @@
+import{t as e}from"./execution-pyodide.worker-DJ8gpLjg.js";var t=e(((e,t)=>{t.exports={}}));export default t();
