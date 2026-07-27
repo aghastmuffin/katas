@@ -11,6 +11,15 @@ import {
   getLanguage,
   resolveStarterCode,
 } from './languages/index.js';
+import {
+  createGamifiedDashboard,
+  addXP,
+  updateStreak,
+  triggerConfetti,
+  playSuccessSound,
+  playLevelUpSound,
+  showSuccessToast,
+} from './gamification.js';
 
 /** Build a styled DOM preview for a single value (array chips, scalars, etc.). */
 function createValueView(value) {
@@ -425,6 +434,10 @@ async function renderLesson(data, num) {
 
   document.body.innerHTML = '';
 
+  // Render Gamified Dashboard
+  const dashboard = createGamifiedDashboard(config);
+  document.body.appendChild(dashboard);
+
   const title = document.createElement('h1');
   title.textContent = config.title || 'Lesson';
   document.body.appendChild(title);
@@ -527,17 +540,55 @@ async function renderLesson(data, num) {
   nextBtn.className = 'finbtn next-lesson-btn';
   nextBtn.hidden = true;
   nextBtn.textContent = hasNext ? 'Next' : 'Finished';
-  nextBtn.disabled = !hasNext;
+  nextBtn.disabled = false; // Always allow interaction when shown
   document.body.appendChild(nextBtn);
 
   if (hasNext) {
     nextBtn.addEventListener('click', () => {
+      // Award XP for reading lessons (+50 XP) if there were no graded tests
+      const graded = gradedMounts();
+      if (graded.length === 0) {
+        const sublessonKey = `completed_${config.id || 'lesson'}_sub_${num}`;
+        if (localStorage.getItem(sublessonKey) !== 'true') {
+          localStorage.setItem(sublessonKey, 'true');
+          updateStreak();
+          addXP(50);
+        }
+      }
       renderLesson(data, num + 1);
+    });
+  } else {
+    nextBtn.addEventListener('click', () => {
+      // Award XP for reading lessons (+50 XP) if there were no graded tests
+      const graded = gradedMounts();
+      if (graded.length === 0) {
+        const sublessonKey = `completed_${config.id || 'lesson'}_sub_${num}`;
+        if (localStorage.getItem(sublessonKey) !== 'true') {
+          localStorage.setItem(sublessonKey, 'true');
+          updateStreak();
+          addXP(50);
+        }
+      }
+      // Big lesson-complete celebration!
+      showSuccessToast(`<strong>🏆 Lesson Completed!</strong><br>Excellent work finishing "${config.title || 'Lesson'}"!`);
+      triggerConfetti();
+      setTimeout(triggerConfetti, 350);
+      playLevelUpSound();
+
+      // Disable button after clicking to prevent multi-clicks
+      nextBtn.disabled = true;
+
+      // Go back to landing page after a short celebration delay
+      setTimeout(() => {
+        window.location.reload();
+      }, 3000);
     });
   }
 
   const gradedMounts = () =>
     editorMounts.filter((m) => m.testCases.length > 0);
+
+  let sublessonCompletedCelebrated = false;
 
   const refreshNextVisibility = () => {
     const graded = gradedMounts();
@@ -546,6 +597,34 @@ async function renderLesson(data, num) {
       graded.length === 0 ||
       graded.every((m) => m.testPanel?.allPassed());
     nextBtn.hidden = !complete;
+
+    // Trigger celebration when graded sub-lesson is completed successfully
+    if (graded.length > 0 && complete && !sublessonCompletedCelebrated) {
+      sublessonCompletedCelebrated = true;
+
+      const sublessonKey = `completed_${config.id || 'lesson'}_sub_${num}`;
+      const isFirstTime = localStorage.getItem(sublessonKey) !== 'true';
+
+      if (isFirstTime) {
+        localStorage.setItem(sublessonKey, 'true');
+        updateStreak();
+        addXP(100);
+        showSuccessToast(`<strong>Sub-lesson Cleared!</strong><br>+100 XP awarded!<br>Streak updated! 🔥`);
+        triggerConfetti();
+        playSuccessSound();
+      } else {
+        showSuccessToast(`<strong>Success!</strong><br>Sub-lesson solved again! ✨`);
+        triggerConfetti();
+        playSuccessSound();
+      }
+
+      // Re-render the dashboard to update XP, Level, and Streak immediately
+      const oldDashboard = document.querySelector('.gamified-dashboard');
+      if (oldDashboard) {
+        const newDashboard = createGamifiedDashboard(config);
+        oldDashboard.replaceWith(newDashboard);
+      }
+    }
   };
 
   // Lessons with no graded code can advance right away
