@@ -1,5 +1,11 @@
 import './style.css';
 import { displayLesson } from './lesson.js';
+import { createGamifiedDashboard } from './gamification.js';
+
+// Render dashboard on landing page
+const dashboard = createGamifiedDashboard();
+
+document.body.prepend(dashboard);
 import { load } from 'js-yaml';
 
 // Determine the endpoint (local default or custom query parameter '?endpoint=...')
